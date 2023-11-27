@@ -29,10 +29,12 @@ let () =
   (* Open file *)
   let graph = from_file infile in
 
-  let graph2 = clone_nodes graph in
+  (*let graph2 = clone_nodes graph in*)
+  (*let graph3 = gmap graph (fun _ -> "Chameau") in*)
+  let graph4 = add_arc (gmap graph int_of_string) 0 2 10 in
 
   (* Rewrite the graph that has been read. *)
-  let () = write_file outfile graph2 in
+  let () = write_file outfile (gmap graph4 string_of_int) in
   
   ()
 
