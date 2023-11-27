@@ -34,7 +34,7 @@ let () =
   let graph4 = add_arc (gmap graph int_of_string) 0 2 10 in
 
   (* Rewrite the graph that has been read. *)
-  let () = write_file outfile (gmap graph4 string_of_int) in
+  let () = export outfile (gmap graph4 string_of_int) in
   
   ()
 

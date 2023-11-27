@@ -31,6 +31,20 @@ let compute_y id =
 
   300 + sgn * (delta / 2) * 100
   
+  let export path graph =
+
+    (* Open a write-file. *)
+    let ff = open_out path in
+    
+    fprintf ff "digraph finite_state_machine {\n";
+
+    (* Write all arcs *)
+    let _ = e_fold graph (fun count arc -> fprintf ff "  %d -> %d [label = %s];\n" arc.src arc.tgt arc.lbl; count + 1) 0 in
+
+    fprintf ff "}";
+    
+    close_out ff ;
+    ()
 
 let write_file path graph =
 
