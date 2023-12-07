@@ -28,13 +28,12 @@ let () =
 
   (* Open file *)
   let graph = from_file infile in
+  let graph1 = gmap graph (fun label -> {capa = int_of_string label; curr = 0}) in
 
   (*let graph2 = clone_nodes graph in*)
   (*let graph3 = gmap graph (fun _ -> "Chameau") in*)
-  let graph4 = add_arc (gmap graph int_of_string) 0 2 10 in
 
   (* Rewrite the graph that has been read. *)
-  let () = export outfile (gmap graph4 string_of_int) in
+  let () = export outfile (gmap graph1 string_of_flow) in
   
   ()
-
