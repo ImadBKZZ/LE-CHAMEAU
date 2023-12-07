@@ -35,5 +35,6 @@ let () =
 
   (* Rewrite the graph that has been read. *)
   let () = export outfile (gmap graph1 string_of_flow) in
-  
-  ()
+    match find_path graph1 0 5 with
+    | None -> Printf.printf "None\n"
+    | Some l -> (List.iter (Printf.printf "%d ") l)
