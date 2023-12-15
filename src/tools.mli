@@ -13,3 +13,4 @@ val init: int graph -> flow graph
 val string_of_flow: flow -> string
 val find_path: flow graph -> id -> id -> flow arc list option
 val update_flow: flow graph -> flow arc list option -> flow graph
+val print_path: flow arc list option -> unit

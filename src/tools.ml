@@ -40,40 +40,51 @@ let find_path gr s_id d_id =
   in find_path_helper [] s_id
 *)
 
+let print_path opt_path = 
+  let path_from_opt_path opt_path =
+    match opt_path with
+    | None -> []
+    | Some path -> path
+  in
+  let print_arc arc = Printf.printf "(%d -> %d) {%d/%d} " arc.src arc.tgt arc.lbl.curr arc.lbl.capa
+  in
+  let () = List.iter print_arc (path_from_opt_path opt_path) in 
+  Printf.printf "\n"
+
 let available_flow arc = arc.lbl.capa - arc.lbl.curr
 
 let find_path gr s_id d_id =
   let rec loop path current_node =
     if current_node = d_id then Some path
     else find_available_flow_arc path (out_arcs gr current_node)
-    
-    and find_available_flow_arc path arcs =
-      match arcs with
-      | [] -> None
-      | a::l -> if available_flow a > 0 then
+
+  and find_available_flow_arc path arcs =
+    match arcs with
+    | [] -> None
+    | a::l -> if available_flow a > 0 then
         match loop (a::path) (a.tgt) with
         | None -> find_available_flow_arc path l
-        | Some p -> Some p (*à revoir*)
+        | Some p -> Some (a::p) (*à revoir*)
       else find_available_flow_arc path l
 
   in loop [] s_id
 
 let update_flow gr opt_path =
-   let path =
+  let path =
     match opt_path with
     | None -> []
     | Some p -> p
-   in
-   let get_min_flow gr path =
+  in
+  let get_min_flow gr path =
     let rec loop minimum gr path = 
       match path with
       | [] -> minimum
       | arc::p -> loop (min minimum (available_flow arc)) gr p
-      in loop (available_flow (List.hd path)) gr path
-    in
-    let min_flow = get_min_flow gr path in
-    let rec add_flow gr path =
-      match path with
-      | [] -> gr
-      | arc::p -> add_flow (add_arc gr arc.src arc.tgt {arc.lbl with curr = min_flow}) p
-    in add_flow gr path
+    in loop (available_flow (List.hd path)) gr path
+  in
+  let min_flow = get_min_flow gr path in
+  let rec add_flow gr path =
+    match path with
+    | [] -> gr
+    | arc::p -> add_flow (add_arc gr arc.src arc.tgt {arc.lbl with curr = min_flow}) p
+  in Printf.printf "Min flow: %d\n" (get_min_flow gr path);add_flow gr path
