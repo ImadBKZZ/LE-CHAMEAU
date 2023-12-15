@@ -28,13 +28,15 @@ let () =
 
   (* Open file *)
   let graph = from_file infile in
-  let graph1 = gmap graph (fun label -> {capa = int_of_string label; curr = 0}) in
-
-  (*let graph2 = clone_nodes graph in*)
-  (*let graph3 = gmap graph (fun _ -> "Chameau") in*)
+  let graph1 = gmap graph int_of_string in
+  let graph2 = init graph1 in
+  let graph3 = update_flow graph2 (find_path graph2 0 5) in
 
   (* Rewrite the graph that has been read. *)
-  let () = export outfile (gmap graph1 string_of_flow) in
+  let () = export outfile (gmap graph3 string_of_flow) in
+  (*
     match find_path graph1 0 5 with
     | None -> Printf.printf "None\n"
     | Some l -> (List.iter (Printf.printf "%d ") l)
+  *)
+  ()
