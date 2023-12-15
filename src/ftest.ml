@@ -1,4 +1,5 @@
 open Gfile
+open Graph
 open Tools
     
 let () =
@@ -27,16 +28,12 @@ let () =
   in
 
   (* Open file *)
+  let path = Some [{src = 0; tgt = 2; lbl = {curr = 0; capa = 8}}; {src = 2; tgt = 4; lbl = {curr = 0; capa = 12}}; {src = 4; tgt = 5; lbl = {curr = 0; capa = 14}}] in
   let graph = from_file infile in
   let graph1 = gmap graph int_of_string in
   let graph2 = init graph1 in
-  let graph3 = update_flow graph2 (find_path graph2 0 5) in
+  let graph3 = update_flow graph2 path in
 
   (* Rewrite the graph that has been read. *)
   let () = export outfile (gmap graph3 string_of_flow) in
-  (*
-    match find_path graph1 0 5 with
-    | None -> Printf.printf "None\n"
-    | Some l -> (List.iter (Printf.printf "%d ") l)
-  *)
   ()

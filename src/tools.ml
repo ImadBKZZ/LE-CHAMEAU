@@ -15,7 +15,7 @@ let add_arc gr id1 id2 flow =
   | None -> new_arc gr {src = id1; tgt = id2; lbl = flow}
   | Some arc -> new_arc gr {src = id1; tgt = id2; lbl = {curr = arc.lbl.curr + flow.curr; capa = arc.lbl.capa}}
 
-let init gr = gmap gr (fun label -> {capa = label; curr = 0})
+let init gr = gmap gr (fun label -> {curr = 0; capa = label})
 
 let string_of_flow flow = "\"" ^ string_of_int flow.curr ^ "/" ^ string_of_int flow.capa ^ "\""
 
@@ -42,26 +42,10 @@ let find_path gr s_id d_id =
 
 let available_flow arc = arc.lbl.capa - arc.lbl.curr
 
-(*
-let max_flow_arc gr id =
-  let arcs = out_arcs gr id in
-  let loop acc =
-    match arcs with
-    | [] -> acc
-    | a::l ->
-      loop (if available_flow a > available_flow acc then a else acc)
-    in loop (hd (out_arcs gr id))
-*)
-
-
-
 let find_path gr s_id d_id =
   let rec loop path current_node =
     if current_node = d_id then Some path
-    else find_available_flow_arc path (out_arcs gr current_node) (*in
-    match arc with
-    | None -> None
-    | Some a -> loop (arc::path) (arc.tgt)*)
+    else find_available_flow_arc path (out_arcs gr current_node)
     
     and find_available_flow_arc path arcs =
       match arcs with
@@ -69,35 +53,27 @@ let find_path gr s_id d_id =
       | a::l -> if available_flow a > 0 then
         match loop (a::path) (a.tgt) with
         | None -> find_available_flow_arc path l
-        | Some p -> Some (a::p) (*à revoir*)
+        | Some p -> Some p (*à revoir*)
       else find_available_flow_arc path l
 
   in loop [] s_id
 
 let update_flow gr opt_path =
-  let path = 
+   let path =
     match opt_path with
     | None -> []
     | Some p -> p
-  in
-  let rec get_min_flow min p =
-    match p with
-    | [] -> min
-    | a::l ->
-      let a_flow = available_flow a in
-      get_min_flow (if a_flow < min then a_flow else min) l
-  in
-  let rec add_flow gr p =
-    match p with
-    | [] -> gr
-    | a::l -> add_flow (add_arc gr (a.src) (a.tgt) {curr = get_min_flow 0 p; capa = a.lbl.capa}) l
-  in add_flow gr path
-
-(*
-    match current_node with
-    | d_id -> path
-    | id ->
-      let arc = max_flow_arc gr id in
-      loop (arc::path) id d_id
-    in loop [] [] s_id d_id
-*)
+   in
+   let get_min_flow gr path =
+    let rec loop minimum gr path = 
+      match path with
+      | [] -> minimum
+      | arc::p -> loop (min minimum (available_flow arc)) gr p
+      in loop (available_flow (List.hd path)) gr path
+    in
+    let min_flow = get_min_flow gr path in
+    let rec add_flow gr path =
+      match path with
+      | [] -> gr
+      | arc::p -> add_flow (add_arc gr arc.src arc.tgt {arc.lbl with curr = min_flow}) p
+    in add_flow gr path
