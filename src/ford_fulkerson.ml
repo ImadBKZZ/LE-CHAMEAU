@@ -31,21 +31,21 @@ let print_path opt_path =
 let available_flow arc = arc.lbl.capa - arc.lbl.curr
 
 let get_path gr s_id d_id =
-  let rec check_path_found path current_node =
+  let rec check_path_found path current_node visited_nodes =
     if current_node = d_id then Some (List.rev path)
-    else find_path path (out_arcs gr current_node)
+    else find_path path (out_arcs gr current_node) (current_node::visited_nodes)
 
-  and find_path path arcs =
+  and find_path path arcs visited_nodes =
     match arcs with
     | [] -> None
-    | a::l -> if List.mem a path then find_path path l else
+    | a::l -> if List.mem a.tgt visited_nodes then find_path path l visited_nodes else
       if available_flow a > 0 then 
-        match check_path_found (a::path) (a.tgt) with
-        | None -> find_path path l
+        match check_path_found (a::path) (a.tgt) visited_nodes with
+        | None -> find_path path l visited_nodes
         | Some p -> Some p
-      else find_path path l
+      else find_path path l visited_nodes
 
-  in check_path_found [] s_id
+  in check_path_found [] s_id []
 
 let update_flow gr opt_path =
   let path =
@@ -70,13 +70,13 @@ let update_flow gr opt_path =
         | Some a -> a
         | None -> arc
       in let new_graph = add_arc gr arc.src arc.tgt {arc.lbl with curr = min_flow}
-      in add_flow (if back_arc.lbl.capa == arc.lbl.capa then add_arc new_graph arc.tgt arc.src {arc.lbl with curr = -min_flow} else new_graph) p
+      in add_flow (if back_arc.lbl.capa == arc.lbl.capa && back_arc.lbl.curr >= min_flow then add_arc new_graph arc.tgt arc.src {arc.lbl with curr = -min_flow} else new_graph) p
   in add_flow gr path
 
 let rec optimal_flow gr s_id d_id = 
   match get_path gr s_id d_id with
   | None -> gr
-  | Some path -> optimal_flow (update_flow gr (Some path)) s_id d_id
+  | Some path -> print_path (Some path); optimal_flow (update_flow gr (Some path)) s_id d_id
 
 let ford_fulkerson gr s_id d_id = 
   let new_gr = optimal_flow (back_arcs (init gr)) s_id d_id
