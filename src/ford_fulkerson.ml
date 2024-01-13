@@ -13,14 +13,7 @@ let init gr = gmap gr (fun label -> {curr = 0; capa = label})
 let back_arcs gr = e_fold gr (fun acc arc -> 
   if not (arc_exists gr arc.tgt arc.src)
   then new_arc acc {src = arc.tgt; tgt = arc.src; lbl = {curr = arc.lbl.capa; capa = arc.lbl.capa}}
-  else 
-    let back_arc = 
-      match find_arc gr arc.tgt arc.src with
-      | Some a -> a
-      | None -> arc
-    in let new_arc_flow = {curr = back_arc.lbl.capa; capa = arc.lbl.capa + back_arc.lbl.capa}
-    in let new_back_arc_flow = {curr = arc.lbl.capa; capa = arc.lbl.capa + back_arc.lbl.capa}
-    in set_flow (set_flow acc back_arc new_back_arc_flow) arc new_arc_flow) gr
+  else acc) gr
                                   
 let string_of_flow flow = "\"" ^ string_of_int flow.curr ^ "/" ^ string_of_int flow.capa ^ "\""
 
@@ -72,8 +65,12 @@ let update_flow gr opt_path =
     match path with
     | [] -> gr
     | arc::p -> 
-      let new_graph = add_arc gr arc.src arc.tgt {arc.lbl with curr = min_flow}
-      in add_flow (add_arc new_graph arc.tgt arc.src {arc.lbl with curr = -min_flow}) p
+      let back_arc =
+        match find_arc gr arc.tgt arc.src with
+        | Some a -> a
+        | None -> arc
+      in let new_graph = add_arc gr arc.src arc.tgt {arc.lbl with curr = min_flow}
+      in add_flow (if back_arc.lbl.capa == arc.lbl.capa then add_arc new_graph arc.tgt arc.src {arc.lbl with curr = -min_flow} else new_graph) p
   in add_flow gr path
 
 let rec optimal_flow gr s_id d_id = 
