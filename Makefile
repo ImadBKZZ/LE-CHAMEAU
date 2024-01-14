@@ -3,7 +3,7 @@
 src?=0
 dst?=5
 graph?=1
-matrix?=matrix.txt
+matrix?=1
 
 all: build
 
@@ -27,7 +27,7 @@ demo1: build
 
 demo2: build
 	@echo "\n   ⚡  EXECUTING  ⚡\n"
-	./ftest.exe 2 $(matrix) outfile2
+	./ftest.exe 2 matrices/matrix$(matrix).txt outfile2
 	@dot -Tsvg outfile2 > bm_graph.svg
 	@display bm_graph.svg
 

@@ -66,4 +66,4 @@ let printf_nb_applicants_jobs gr source_id sink_id =
       else acc
     | None -> acc
   ) (0, 0) in
-  Printf.printf "\n%d applicants got %d/%d jobs.\n\n" nb_aplicants nb_jobs_got nb_jobs
+  Printf.printf "\n%d/%d applicants got %d/%d jobs.\n\n" nb_jobs_got nb_aplicants nb_jobs_got nb_jobs
