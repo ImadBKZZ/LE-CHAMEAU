@@ -76,7 +76,7 @@ let update_flow gr opt_path =
 let rec optimal_flow gr s_id d_id = 
   match get_path gr s_id d_id with
   | None -> gr
-  | Some path -> print_path (Some path); optimal_flow (update_flow gr (Some path)) s_id d_id
+  | Some path -> optimal_flow (update_flow gr (Some path)) s_id d_id
 
 let ford_fulkerson gr s_id d_id = 
   let new_gr = optimal_flow (back_arcs (init gr)) s_id d_id

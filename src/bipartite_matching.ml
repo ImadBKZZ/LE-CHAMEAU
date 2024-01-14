@@ -1,4 +1,5 @@
 open Graph
+open Tools
 
 let rec create_rows_nodes gr rows =
   match rows with
@@ -51,3 +52,18 @@ let graph_from_matrix matrix =
   let graph_sink_arcs = arcs_from_cols_to_sink graph_source_arcs sink_id rows (cols-1) in
   let complete_graph = arcs_from_rows_to_cols graph_sink_arcs matrix (rows-1) (cols-1) in
   complete_graph
+
+let printf_nb_applicants_jobs gr source_id sink_id =
+  let nb_aplicants = List.length (out_arcs gr source_id) in
+  let (nb_jobs_got, nb_jobs) = e_fold gr
+  (fun acc arc ->
+    match find_arc gr arc.src arc.tgt with
+    | Some a ->
+      if a.tgt == sink_id then
+        if a.lbl.curr == 1
+        then ((fst acc)+1, (snd acc)+1)
+        else (fst acc, (snd acc)+1)
+      else acc
+    | None -> acc
+  ) (0, 0) in
+  Printf.printf "\n%d applicants got %d/%d jobs.\n\n" nb_aplicants nb_jobs_got nb_jobs

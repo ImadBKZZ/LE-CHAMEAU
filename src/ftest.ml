@@ -8,9 +8,8 @@ let () =
 
 let dmo = int_of_string Sys.argv.(1) in
 
-if dmo == 1 then
-
-(
+if dmo == 1 then (
+  
 (* Check the number of command-line arguments *)
 if Array.length Sys.argv <> 6 then
   begin
@@ -43,9 +42,9 @@ let graph2 = ford_fulkerson graph1 _source _sink in
 (* Rewrite the graph that has been read. *)
 let () = export outfile (gmap graph2 string_of_flow) in
 ()
-)
-else
-(
+
+) else (
+
 let infile = Sys.argv.(2)
 and outfile1 = Sys.argv.(3) in
 
@@ -55,6 +54,10 @@ let sink = source + 1 in
 let m_graph = graph_from_matrix matrix in
 let ff_m_graph = ford_fulkerson m_graph source sink in
 
-let () = display_matrix matrix; export outfile1 (gmap ff_m_graph string_of_flow) in
+
+let () = 
+printf_nb_applicants_jobs ff_m_graph source sink;
+export outfile1 (gmap ff_m_graph string_of_flow) in
 ()
+
 )
