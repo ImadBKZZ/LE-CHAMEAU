@@ -19,16 +19,16 @@ edit:
 	code . -n
 
 demo1: build
-	./ftest.exe 1 graphs/graph$(graph).txt $(src) $(dst) outfile
-	@echo "\n   🥁  RESULT (content of outfile)  🥁\n"
-	@dot -Tsvg outfile > graph.svg
+	./ftest.exe 1 graphs/graph$(graph).txt $(src) $(dst) outfile1
+	@echo "\n   🥁  RESULT (content of outfile1)  🥁\n"
+	@dot -Tsvg outfile1 > graph.svg
 	@display graph.svg
 
 
 demo2: build
 	@echo "\n   ⚡  EXECUTING  ⚡\n"
-	./ftest.exe 2 $(matrix) outfile1
-	@dot -Tsvg outfile1 > bm_graph.svg
+	./ftest.exe 2 $(matrix) outfile2
+	@dot -Tsvg outfile2 > bm_graph.svg
 	@display bm_graph.svg
 
 clean:
