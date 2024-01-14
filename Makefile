@@ -22,20 +22,22 @@ edit:
 demo1: build
 	./ftest.exe 1 graphs/graph$(graph).txt $(src) $(dst) outfile1
 	@echo "\n   🥁  RESULT (content of outfile1)  🥁\n"
-	@dot -Tsvg outfile1 > graph.svg
-	@display graph.svg
+	@dot -Tpng outfile1 -o output1.png
+	@display output1.png
 
 
 demo2: build
 	@echo "\n   ⚡  EXECUTING  ⚡\n"
 	./ftest.exe 2 matrices/matrix$(matrix).txt outfile2
 	@dot -Tsvg outfile2 > bm_graph.svg
-	@display bm_graph.svg
+	@dot -Tpng outfile2 -o output2.png
+	@display output2.png
 
 demo3: build
 	./ftest.exe 3  outfile3 $(src) $(dst) $(team)
 	@echo "\n   🥁  RESULT (content of outfile1)  🥁\n"
-	@dot -Tsvg outfile3 > graph2.svg
+	@dot -Tpng outfile3 -o output3.png
+	@display output3.png
 clean:
 	find -L . -name "*~" -delete
 	rm -f *.exe
