@@ -1,0 +1,18 @@
+digraph finite_state_machine {
+  fontname="Helvetica,Arial,sans-serif"
+  node [fontname="Helvetica,Arial,sans-serif"]
+  edge [fontname="Helvetica,Arial,sans-serif"]
+  rankdir=LR;
+  node [shape = circle];  4 -> 5 [label = "2/14"];
+  24 -> 4 [label = "2/4611686018427387903"];
+  24 -> 2 [label = "0/4611686018427387903"];
+  0 -> 24 [label = "2/2"];
+  0 -> 34 [label = "0/0"];
+  0 -> 23 [label = "0/0"];
+  2 -> 5 [label = "0/11"];
+  3 -> 5 [label = "0/13"];
+  23 -> 3 [label = "0/4611686018427387903"];
+  23 -> 2 [label = "0/4611686018427387903"];
+  34 -> 4 [label = "0/4611686018427387903"];
+  34 -> 3 [label = "0/4611686018427387903"];
+}

@@ -2,6 +2,7 @@
 
 src?=0
 dst?=5
+team?=1
 graph?=1
 matrix?=1
 
@@ -31,6 +32,10 @@ demo2: build
 	@dot -Tsvg outfile2 > bm_graph.svg
 	@display bm_graph.svg
 
+demo3: build
+	./ftest.exe 3  outfile3 $(src) $(dst) $(team)
+	@echo "\n   🥁  RESULT (content of outfile1)  🥁\n"
+	@dot -Tsvg outfile3 > graph2.svg
 clean:
 	find -L . -name "*~" -delete
 	rm -f *.exe

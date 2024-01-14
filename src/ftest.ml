@@ -3,6 +3,7 @@ open Tools
 open Ford_fulkerson
 open Mfile
 open Bipartite_matching
+open Criquet
 
 let () =
 
@@ -37,13 +38,13 @@ in
 
 let graph = from_file infile in
 let graph1 = gmap graph int_of_string in
-let graph2 = ford_fulkerson graph1 _source _sink in
+let graph2 = ford_fulkerson (init graph1) _source _sink in
 
 (* Rewrite the graph that has been read. *)
 let () = export outfile (gmap graph2 string_of_flow) in
 ()
 
-) else (
+) else if dmo == 2 then (
 
 let infile = Sys.argv.(2)
 and outfile1 = Sys.argv.(3) in
@@ -52,7 +53,7 @@ let (matrix, rows, cols) = read_mfile infile in
 let source = rows + cols in
 let sink = source + 1 in
 let m_graph = graph_from_matrix matrix in
-let ff_m_graph = ford_fulkerson m_graph source sink in
+let ff_m_graph = ford_fulkerson (init m_graph) source sink in
 
 
 let () = 
@@ -60,4 +61,16 @@ printf_nb_applicants_jobs ff_m_graph source sink;
 export outfile1 (gmap ff_m_graph string_of_flow) in
 ()
 
+) else (
+
+  let outfile = Sys.argv.(2) 
+  and _source = int_of_string Sys.argv.(3)
+  and _sink = int_of_string Sys.argv.(4)
+  and team = getteambyid (int_of_string Sys.argv.(5))
+  in 
+  let teamlist = [mi;csk;kkr;dc] in
+  let graphe = createGraphAndArcsAndMore team teamlist in
+  let graphe2 = ford_fulkerson graphe _source _sink in
+  let () = export outfile (gmap graphe2 string_of_flow)in
+  ()
 )

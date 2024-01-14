@@ -11,4 +11,4 @@ val available_flow: flow arc -> int
 val get_path: flow graph -> id -> id -> flow arc list option
 val update_flow: flow graph -> flow arc list option -> flow graph
 val optimal_flow: flow graph -> id -> id -> flow graph
-val ford_fulkerson: int graph -> id -> id -> flow graph
+val ford_fulkerson: flow graph -> id -> id -> flow graph
