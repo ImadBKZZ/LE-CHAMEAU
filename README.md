@@ -14,7 +14,9 @@ Features :
 
 A makefile provides some useful commands:
  - `make build` to compile. This creates an ftest.native executable
- - `make demo` to run the `ftest` program with some arguments
+ - `make demo1` to run the Ford Fulkerson demo
+ - `make demo2` to run the Bipartite Matching demo
+ - `make demo3` to the the Cricket Problen demo
  - `make format` to indent the entire project
  - `make edit` to open the project in VSCode
  - `make clean` to remove build artifacts
@@ -22,6 +24,9 @@ A makefile provides some useful commands:
 In case of trouble with the VSCode extension (e.g. the project does not build, there are strange mistakes), a common workaround is to (1) close vscode, (2) `make clean`, (3) `make build` and (4) reopen vscode (`make edit`).
 
 ## Explication ## 
+
+Nous avons implémenté l'algorithme de Ford Fulkerson, et 2 projets intermédiaires: `Bipartite Matching` et `Cricket Elimination Problem`
+
 ### Probleme du Criquet : 
 On a 4 équipes qui jouent un tournoi , les équipes jouent 162 matches. Pour chaque equipe , on enregistre le nombre de matches gagnés, le nombre de matches perdus, les macthes restants totals et le nombre de matches restants contre chaque équipe.
 Avec un point de depart, on veut savoir quelle(s) equipe(s) sera eliminee(s) de la premiere place.
