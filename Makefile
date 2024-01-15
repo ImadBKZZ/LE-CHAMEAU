@@ -2,9 +2,9 @@
 
 src?=0
 dst?=5
-team?=1
 graph?=1
-matrix?=1
+matrix?=12
+team?=1
 
 all: build
 
@@ -22,22 +22,22 @@ edit:
 demo1: build
 	./ftest.exe 1 graphs/graph$(graph).txt $(src) $(dst) outfile1
 	@echo "\n   🥁  RESULT (content of outfile1)  🥁\n"
-	@dot -Tpng outfile1 -o output1.png
-	@display output1.png
+	@dot -Tsvg outfile1 > output1.svg
+	@display output1.svg
 
 
 demo2: build
 	@echo "\n   ⚡  EXECUTING  ⚡\n"
 	./ftest.exe 2 matrices/matrix$(matrix).txt outfile2
-	@dot -Tsvg outfile2 > bm_graph.svg
-	@dot -Tpng outfile2 -o output2.png
-	@display output2.png
+	@dot -Tsvg outfile2 > output2.svg
+	@display output2.svg
 
 demo3: build
-	./ftest.exe 3  outfile3 $(src) $(dst) $(team)
+	./ftest.exe 3 outfile3 $(src) $(dst) $(team)
 	@echo "\n   🥁  RESULT (content of outfile1)  🥁\n"
-	@dot -Tpng outfile3 -o output3.png
-	@display output3.png
+	@dot -Tsvg outfile3 > output3.svg
+	@display output3.svg
+
 clean:
 	find -L . -name "*~" -delete
 	rm -f *.exe

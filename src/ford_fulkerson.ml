@@ -79,5 +79,5 @@ let rec optimal_flow gr s_id d_id =
   | Some path -> optimal_flow (update_flow gr (Some path)) s_id d_id
 
 let ford_fulkerson gr s_id d_id = 
-  let new_gr = optimal_flow (back_arcs (gr)) s_id d_id
+  let new_gr = optimal_flow (back_arcs gr) s_id d_id
   in e_fold new_gr (fun acc arc -> if arc_exists gr arc.src arc.tgt then add_arc acc arc.src arc.tgt arc.lbl else acc) (clone_nodes gr)
