@@ -1,4 +1,4 @@
-#Projet Ocaml: Problème élimination du Criquet
+# Projet Ocaml: Problème élimination du Criquet
 
 Base project for Ocaml project on Ford-Fulkerson. This project contains some simple configuration files to facilitate editing Ocaml in VSCode.
 
@@ -21,7 +21,7 @@ A makefile provides some useful commands:
 
 In case of trouble with the VSCode extension (e.g. the project does not build, there are strange mistakes), a common workaround is to (1) close vscode, (2) `make clean`, (3) `make build` and (4) reopen vscode (`make edit`).
 
-##Explication## 
+## Explication ## 
 Probleme du Criquet : 
 On a 4 équipes qui jouent un tournoi , les équipes jouent 162 matches. Pour chaque equipe , on enregistre le nombre de matches gagnés, le nombre de matches perdus, les macthes restants totals et le nombre de matches restants contre chaque équipe.
 Avec un point de depart, on veut savoir quelle(s) equipe(s) sera eliminee(s) de la premiere place.
