@@ -53,8 +53,26 @@ let convertTeamtoString team = match team with
   | 5 -> "t"
   |_ -> failwith "WrongTeam"
 
-
 let export path graph =
+
+    (* Open a write-file. *)
+    let ff = open_out path in
+  
+    fprintf ff "digraph finite_state_machine {\n";
+    fprintf ff "  fontname=\"Helvetica,Arial,sans-serif\"\n";
+    fprintf ff "  node [fontname=\"Helvetica,Arial,sans-serif\"]\n";
+    fprintf ff "  edge [fontname=\"Helvetica,Arial,sans-serif\"]\n";
+    fprintf ff "  rankdir=LR;\n";
+    fprintf ff "  node [shape = circle];";
+  
+    (* Write all arcs *)
+    let _ = e_fold graph (fun count arc -> fprintf ff "  %d -> %d [label = %s];\n" arc.src arc.tgt arc.lbl; count + 1) 0 in
+  
+    fprintf ff "}";
+  
+    close_out ff ;
+    ()
+let export2 path graph =
 
   (* Open a write-file. *)
   let ff = open_out path in

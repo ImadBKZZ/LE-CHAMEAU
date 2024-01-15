@@ -71,6 +71,6 @@ export outfile1 (gmap ff_m_graph string_of_flow) in
   let teamlist = [mi;csk;kkr;dc] in
   let graphe = createGraphAndArcsAndMore team teamlist in
   let graphe2 = ford_fulkerson graphe _source _sink in
-  let () = export outfile (gmap graphe2 string_of_flow)in
+  let () = export2 outfile (gmap graphe2 string_of_flow)in
   ()
 )

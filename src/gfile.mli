@@ -10,6 +10,8 @@ val from_file: path -> string graph
 
 val export: path -> string graph -> unit
 
+val export2: path -> string graph -> unit
+
 (* Similarly, we write only a string graph.
  * If necessary, use gmap (to be written by you) to prepare the input graph. *)
 val write_file: path -> string graph -> unit
