@@ -15,7 +15,7 @@ let back_arcs gr = e_fold gr (fun acc arc ->
   then new_arc acc {src = arc.tgt; tgt = arc.src; lbl = {curr = arc.lbl.capa; capa = arc.lbl.capa}}
   else acc) gr
                                   
-let string_of_flow flow = if flow.capa < 1000 then "\"" ^ string_of_int flow.curr ^ "/" ^ string_of_int flow.capa ^ "\"" else "\"" ^ string_of_int flow.curr ^ "/" ^ "inf" ^ "\"" 
+let string_of_flow flow = if flow.capa < 1000 then "\"" ^ string_of_int flow.curr ^ "/" ^ string_of_int flow.capa ^ "\"" else "\"" ^ string_of_int flow.curr ^ "/" ^ "∞" ^ "\"" 
 
 let print_path opt_path = 
   let path_from_opt_path opt_path =

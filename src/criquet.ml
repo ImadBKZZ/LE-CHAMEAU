@@ -48,19 +48,21 @@ let dc = {
 }
 
 
-
+(* Cette fonction permet qu'avec une liste contenant les equipes , on crée une liste de leurs numero d'equipe (Team.name)*)
 let teamlistToIdlist teamlist = List.map(fun team -> team.name) teamlist
 
 
 
+(*Cette fonction permet de choisir une equipe et de renvoyer une liste des autres equipes*)
 let rec choixteam team = function
   | [] -> []
   | x :: rest when x = team -> rest
   | x :: rest -> x :: choixteam team rest
 
 
-
-let transform_list lst =
+(*Cette fonction recoit comme argument la liste des equipes adverses et renvoie une liste des 
+   combinaisons des confrontations entre ses equipes, un numero correspond à : (numero equipe 1 )x10 + (numero equipe 2)*)
+let list_confontation lst =
     let rec combine acc x = function
       | [] -> List.rev acc
       | y :: rest -> combine ((x * 10 + y) :: acc) x rest
@@ -71,9 +73,10 @@ let transform_list lst =
     in
     process [] lst ;;
 
-let createNodes teamliste =  0::teamliste@(transform_list teamliste)@[5]
+    (*Cette fonction prend en argument la liste des equipes adverses et renvoit une liste de tout les noeuds de notre graphe*)
+let createNodes teamliste =  0::teamliste@(list_confontation teamliste)@[5]
 
-
+(*Cette fonction prend en argument un numero d'equipe(team.name) et renvoie la structure de l'equipe *)
 let getteambyid id = match id with
   |1->mi
   |2->csk
@@ -81,6 +84,7 @@ let getteambyid id = match id with
   |4->dc 
   |_-> failwith "inv indefini"
 
+(*Cette fonction prend en argument une equipe et un id d'une autre equipe et renvoie le nombre de matches restants entre ces 2 equipes*)
 let get_confront team i = match i with 
   |1-> team.championchip.mi
   |2->team.championchip.csk
@@ -89,11 +93,13 @@ let get_confront team i = match i with
   |_->failwith"erreur"
 
 
+  (*Fonction intermediaire *)
 let gameleft id1 id2 = 
   let team1= getteambyid id1 in
   get_confront team1 id2
 
 
+(*Cette fonction prend en argument l'equipe choisi , la liste de toutes les equipes et initialise tout les noeuds du graphe sans les arcs*)
 let createGraph choosenteam liste= 
   let listeAdversaire = createNodes(teamlistToIdlist (choixteam  choosenteam liste)) in
   let rec loop acc = function 
@@ -101,33 +107,35 @@ let createGraph choosenteam liste=
   |x::rest-> loop (new_node acc x) rest 
 in loop empty_graph listeAdversaire
 
-
+(*Cette fonction prend en argument l'equipe choisis et la liste de toutes les equipes  *)
 let createGraphAndArcsAndMore choosenteam liste =
-  let idlist = teamlistToIdlist (choixteam choosenteam liste) in
-  let rencontre = transform_list idlist in
-
+  let idlist = teamlistToIdlist (choixteam choosenteam liste) in 
+  (*idlist contient le numero de toutes les equipes adverses*)
+  let rencontre = list_confontation idlist in
+  (*rencontre contient le numero de toutes les rencontres*)
   let rec createArcs gr = function
     | [] -> gr
     | x :: rest ->
       let arc_0 = add_arc gr 0 x {curr=0; capa=gameleft (x/10) (x mod 10)} in
+      (*Arc_0 crée les arcs entre le noeud s et les noeuds confrontations*)
       let arc_1 = add_arc arc_0 x (x/10) {curr=0; capa= max_int} in
-      let gr_with_arcs = add_arc arc_1 x (x mod 10) {curr=0; capa=max_int} in
+      (*Arc_1 crée les arcs entre les confrontations  et la 1ere equipe de la confrontation*)
+      let arc_2 = add_arc arc_1 x (x mod 10) {curr=0; capa=max_int} in
+      (*Arc_2 crée les arcs entre les confrontations  et la 2eme equipe de la confrontation*)
+     
+      Printf.printf "arcs team %d: vers noeud=%d, et noeud2=%d\n" x (x/10) (x mod 10);
       
-      (* Print information about the current team and arcs *)
-      Printf.printf "Creating arcs for team %d: vers noeud=%d, et noeud2=%d\n" x (x/10) (x mod 10);
-      
-      createArcs gr_with_arcs rest
+      createArcs arc_2 rest
   in 
-
+(*create_Arc4 crée les arcs entre les equipes vers le puit*)
   let rec createArc4 gr teamliste choosenteam = 
     match teamliste with
     | [] -> gr
     | x :: rest ->
       let team_x = getteambyid x in
       let new_capa = choosenteam.wins + choosenteam.gameleft - team_x.wins in
-      
-      (* Print information about the current team and new_capa *)
-      Printf.printf "Processing team %d: wins=%d, gameleft=%d, new_capa=%d\n" team_x.name team_x.wins team_x.gameleft new_capa;
+   
+      Printf.printf "team %d: wins=%d, gameleft=%d, new_capa=%d\n" team_x.name team_x.wins team_x.gameleft new_capa;
 
       let gr_with_arc4 = add_arc gr x 5 {curr=0; capa=new_capa} in
       createArc4 gr_with_arc4 rest choosenteam 

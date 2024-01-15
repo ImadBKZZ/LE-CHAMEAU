@@ -31,6 +31,29 @@ let compute_y id =
 
   300 + sgn * (delta / 2) * 100
 
+
+let convertTeamtoString team = match team with
+  | 0 -> "s"
+  | 1 -> "MI"
+  | 2-> "CSK"
+  | 3 -> "KKR"
+  | 4 -> "DC"
+  | 12 -> "MI-CSK"
+  | 13 -> "MI-KKR"
+  | 14 -> "MI-DC"
+  | 23 -> "CSK-KKR"
+  | 24 -> "CSK-DC"
+  | 34 -> "KKR-DC"
+  | 21 -> "MI-CSK"
+  | 31 -> "MI-KKR"
+  | 41 -> "MI-DC"
+  | 32 -> "CSK-KKR"
+  | 42 -> "CSK-DC"
+  | 43 -> "KKR-CSK"
+  | 5 -> "t"
+  |_ -> failwith "WrongTeam"
+
+
 let export path graph =
 
   (* Open a write-file. *)
@@ -42,9 +65,11 @@ let export path graph =
   fprintf ff "  edge [fontname=\"Helvetica,Arial,sans-serif\"]\n";
   fprintf ff "  rankdir=LR;\n";
   fprintf ff "  node [shape = circle];";
+  fprintf ff "s [shape=doublecircle, style=filled, fillcolor=lightgray]\n";
+  fprintf ff "t [shape=doublecircle, style=filled, fillcolor=lightgray]\n";
 
   (* Write all arcs *)
-  let _ = e_fold graph (fun count arc -> fprintf ff "  %d -> %d [label = %s];\n" arc.src arc.tgt arc.lbl; count + 1) 0 in
+  let _ = e_fold graph (fun count arc -> fprintf ff "  %s -> %s [label = %s];\n" ("\"" ^(convertTeamtoString (arc.src))^"\"")  ("\"" ^(convertTeamtoString (arc.tgt))^"\"")  arc.lbl; count + 1) 0 in
 
   fprintf ff "}";
 

@@ -35,8 +35,8 @@ demo2: build
 demo3: build
 	./ftest.exe 3 outfile3 $(src) $(dst) $(team)
 	@echo "\n   🥁  RESULT (content of outfile1)  🥁\n"
-	@dot -Tsvg outfile3 > output3.svg
-	@display output3.svg
+	@dot -Tpng outfile3 -o output3.png
+	@display output3.png
 
 clean:
 	find -L . -name "*~" -delete

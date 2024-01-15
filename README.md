@@ -19,3 +19,22 @@ A makefile provides some useful commands:
 
 In case of trouble with the VSCode extension (e.g. the project does not build, there are strange mistakes), a common workaround is to (1) close vscode, (2) `make clean`, (3) `make build` and (4) reopen vscode (`make edit`).
 
+##Explication## 
+Probleme du Criquet : 
+On a 4 équipes qui jouent un tournoi , les équipes jouent 162 matches. Pour chaque equipe , on enregistre le nombre de matches gagnés, le nombre de matches perdus, les macthes restants totals et le nombre de matches restants contre chaque équipe.
+Avec un point de depart, on veut savoir quelle(s) equipe(s) sera eliminee(s) de la premiere place.
+Le but de l'algorithme est de choisir une equipe parmi les 4 équipes,  et traiter le nombre de rencontre restant pour savoir si elle sera éliminee de la premiere place. 
+On utilise l'algorithme Ford_Fulkerson afin de determiner si dans le meilleur cas possible une équipe peut gagner le championnat en arrivant en premiere place.
+
+
+D'abord on a crée les types:
+
+"premierLeagueLeftGames" pour stocker le nombre de matches restants contre chaque equipes
+
+"Team" pour avoir la structure de chaque equipe (matches joue, matche perdu , matches restants et "premierLeagueLeftGames)"
+
+Tous les matchs restants entre les équipes x et y (autres que l'équipe z choisie) sont ajoutés au nombre de gains pour x AND y (capacités d'arête infinie).
+
+La capacité sur les bords (x, t) garantit qu'aucune équipe ne gagne trop de matchs, empêchant l'équipe z de gagner.
+
+L'equipe z est éliminée si le flux max sature tous les arcs sortant du noeud s 

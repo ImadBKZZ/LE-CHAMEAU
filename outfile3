@@ -3,16 +3,18 @@ digraph finite_state_machine {
   node [fontname="Helvetica,Arial,sans-serif"]
   edge [fontname="Helvetica,Arial,sans-serif"]
   rankdir=LR;
-  node [shape = circle];  4 -> 5 [label = "2/14"];
-  24 -> 4 [label = "2/inf"];
-  24 -> 2 [label = "0/inf"];
-  0 -> 24 [label = "2/2"];
-  0 -> 34 [label = "0/0"];
-  0 -> 23 [label = "0/0"];
-  2 -> 5 [label = "0/11"];
-  3 -> 5 [label = "0/13"];
-  23 -> 3 [label = "0/inf"];
-  23 -> 2 [label = "0/inf"];
-  34 -> 4 [label = "0/inf"];
-  34 -> 3 [label = "0/inf"];
+  node [shape = circle];s [shape=doublecircle, style=filled, fillcolor=lightgray]
+t [shape=doublecircle, style=filled, fillcolor=lightgray]
+  "DC" -> "t" [label = "2/14"];
+  "CSK-DC" -> "DC" [label = "2/∞"];
+  "CSK-DC" -> "CSK" [label = "0/∞"];
+  "s" -> "CSK-DC" [label = "2/2"];
+  "s" -> "KKR-DC" [label = "0/0"];
+  "s" -> "CSK-KKR" [label = "0/0"];
+  "CSK" -> "t" [label = "0/11"];
+  "KKR" -> "t" [label = "0/13"];
+  "CSK-KKR" -> "KKR" [label = "0/∞"];
+  "CSK-KKR" -> "CSK" [label = "0/∞"];
+  "KKR-DC" -> "DC" [label = "0/∞"];
+  "KKR-DC" -> "KKR" [label = "0/∞"];
 }

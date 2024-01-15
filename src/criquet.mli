@@ -19,7 +19,7 @@ type team = {
 
 val teamlistToIdlist : team list ->id list
 val choixteam : 'a -> 'a list ->'a list
-val transform_list : id list -> id list 
+val list_confontation : id list -> id list 
 val createNodes : id list -> id list
 val getteambyid : id -> team 
 val get_confront : team -> id -> id
@@ -30,4 +30,5 @@ val mi : team
 val csk : team
 val kkr : team
 val dc : team
+
 
