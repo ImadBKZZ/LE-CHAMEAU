@@ -1,3 +1,5 @@
+#Projet Ocaml: Problème élimination du Criquet
+
 Base project for Ocaml project on Ford-Fulkerson. This project contains some simple configuration files to facilitate editing Ocaml in VSCode.
 
 To use, you should install the *OCaml* extension in VSCode. Other extensions might work as well but make sure there is only one installed.
